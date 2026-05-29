@@ -1,0 +1,208 @@
+/* 全局样式 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 900px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #ff6b6b;
+    margin-bottom: 15px;
+    font-size: 2rem;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+}
+
+.controls input {
+    width: 50px;
+    padding: 5px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+button {
+    background: #4ecdc4;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background: #45b7aa;
+    transform: translateY(-2px);
+}
+
+.stats {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* 游戏面板 */
+main {
+    position: relative;
+    min-height: 400px;
+}
+
+#game-board {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    height: 300px;
+    padding: 0 20px;
+    border-bottom: 2px dashed #ccc;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.rod-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    width: 30%;
+}
+
+/* 柱子 */
+.rod {
+    width: 8px;
+    background: linear-gradient(to right, #8e9eab, #eef2f3);
+    height: 250px;
+    border-radius: 4px 4px 0 0;
+    position: absolute;
+    bottom: 30px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.rod-base {
+    width: 80px;
+    height: 20px;
+    background: linear-gradient(to right, #8e9eab, #eef2f3);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 10px;
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+
+/* 盘子 (关键部分) */
+.disk {
+    height: 20px;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 50px; /* 初始高度，会动态改变 */
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* 弹性动画 */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    z-index: 2;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+/* 盘子颜色渐变 */
+.disk[data-size="1"] { background: linear-gradient(45deg, #ff9a9e, #fecfef); width: 40px; }
+.disk[data-size="2"] { background: linear-gradient(45deg, #fad0c4, #ffd1ff); width: 60px; }
+.disk[data-size="3"] { background: linear-gradient(45deg, #a1c4fd, #c2e9fb); width: 80px; }
+.disk[data-size="4"] { background: linear-gradient(45deg, #ffecd2, #fcb69f); width: 100px; }
+.disk[data-size="5"] { background: linear-gradient(45deg, #84fab0, #8fd3f4); width: 120px; }
+.disk[data-size="6"] { background: linear-gradient(45deg, #d4fc79, #96e6a1); width: 140px; }
+.disk[data-size="7"] { background: linear-gradient(45deg, #a6c0fe, #f68084); width: 160px; }
+.disk[data-size="8"] { background: linear-gradient(45deg, #fccb90, #d57eeb); width: 180px; }
+
+/* 消息框 */
+.message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 100;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.message.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.message.error {
+    background: #ff6b6b;
+    color: white;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    25% { transform: translateX(-50%) translateX(-10px) translateY(-5px); }
+    75% { transform: translateX(-50%) translateX(10px) translateY(-5px); }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .rod-container {
+        width: 33%;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    .disk {
+        height: 15px;
+        font-size: 0.8rem;
+    }
+}
